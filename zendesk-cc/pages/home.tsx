@@ -8,13 +8,16 @@ import { Tabs } from "antd";
 import { Pagination } from "antd";
 import { useEffect, useState } from "react";
 import HomePageTicket from "../components/HomePageTicket";
+import Loading from "../components/Loading";
 
 const Dashboard: NextPage = () => {
     const [requestData, setRequestData] = useState<any[]>([]);
+    const [isLoading, setIsLoading]  = useState<Boolean>(true)
     const [state, setState] = useState({
         minValue: 0,
         maxValue: 25,
     });
+
     useEffect(() => {
         axios
             .post("/api/loadAllTickets", {
@@ -25,6 +28,7 @@ const Dashboard: NextPage = () => {
             .then((response) => {
                 console.log(response.data);
                 setRequestData(response.data.tickets);
+                setIsLoading(false)
             })
             .catch((error) => {
                 console.log(error);
@@ -40,6 +44,7 @@ const Dashboard: NextPage = () => {
     };
 
     return (
+      <>{isLoading? <Loading/>:
         // <div className="w-full flex-col flex items-center justify-center">
         //     {requestData.length > 0 &&
         //         requestData.map((element) => {
@@ -154,7 +159,8 @@ const Dashboard: NextPage = () => {
                     </TabPane>
                 </Tabs>
             </div>
-        </div>
+        </div>}
+        </>
     );
 };
 
