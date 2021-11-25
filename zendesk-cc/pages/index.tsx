@@ -14,7 +14,7 @@ const Home: NextPage = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const login = async () => {
-    const response = await axios
+     await axios
       .post("/api/validate", { username: username, password: password })
       .then((response) => {
         console.log(response.data);
