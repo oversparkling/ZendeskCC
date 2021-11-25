@@ -68,8 +68,7 @@ const Dashboard: NextPage = () => {
                         Your tickets at a glance
                     </span>
                     <div>
-                        You have a total of {requestData.length} tickets and 25
-                        on this page
+                        You have a total of {requestData.length} tickets
                     </div>
                     <div className="w-3/4 ">
                         <Tabs defaultActiveKey="1">
@@ -119,6 +118,7 @@ const Dashboard: NextPage = () => {
                                                 defaultCurrent={1}
                                                 defaultPageSize={25} //default size of page
                                                 onChange={handleChange}
+                                                pageSizeOptions = {[]}
                                                 total={requestData.length} //total number of card data available
                                             />
                                         </div>
