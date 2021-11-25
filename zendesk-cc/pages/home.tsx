@@ -12,7 +12,7 @@ import Loading from "../components/Loading";
 
 const Dashboard: NextPage = () => {
     const [requestData, setRequestData] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState<Boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [state, setState] = useState({
         minValue: 0,
         maxValue: 25,
