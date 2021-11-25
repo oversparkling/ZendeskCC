@@ -11,13 +11,14 @@ import HomePageTicket from "../components/HomePageTicket";
 import Loading from "../components/Loading";
 
 const Dashboard: NextPage = () => {
+    const [errorMessage, setErrorMessage] = useState("");
     const [requestData, setRequestData] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [state, setState] = useState({
         minValue: 0,
         maxValue: 25,
     });
-
+    const router = useRouter();
     useEffect(() => {
         axios
             .post("/api/loadAllTickets", {
@@ -31,6 +32,13 @@ const Dashboard: NextPage = () => {
                 setIsLoading(false);
             })
             .catch((error) => {
+                console.log(error.response.status);
+                if (error.response.status == 401) {
+                    router.push("/");
+                } else if (error.response.status == 404) {
+                    setErrorMessage("There is an issue with the server. Please try again later");
+                }
+                setIsLoading(false);
                 console.log(error);
             });
     }, []);
@@ -64,12 +72,13 @@ const Dashboard: NextPage = () => {
                 //         })}
                 // </div>
                 <div className="w-full flex-col flex items-center">
+                    <span className="text-red-500 font-bold text-lg">
+                        {errorMessage}
+                    </span>
                     <span className="text-3xl font-bold mt-20 mb-16">
                         Your tickets at a glance
                     </span>
-                    <div>
-                        You have a total of {requestData.length} tickets
-                    </div>
+                    <div>You have a total of {requestData.length} tickets</div>
                     <div className="w-3/4 ">
                         <Tabs defaultActiveKey="1">
                             <TabPane tab="Open Tickets" key="1">
@@ -118,7 +127,7 @@ const Dashboard: NextPage = () => {
                                                 defaultCurrent={1}
                                                 defaultPageSize={25} //default size of page
                                                 onChange={handleChange}
-                                                pageSizeOptions = {[]}
+                                                pageSizeOptions={[]}
                                                 total={requestData.length} //total number of card data available
                                             />
                                         </div>

@@ -6,6 +6,7 @@ export default async function ZendeskAPI(
     res: NextApiResponse<any>
 ) {
     const zendeskSubDomain = "https://zccoversparkling.zendesk.com/";
+    axios.defaults.timeout = 10000;
     await axios
         .get(
             zendeskSubDomain +
@@ -19,9 +20,15 @@ export default async function ZendeskAPI(
                 },
             }
         )
-        .then((response1) => res.status(200).json(response1.data))
+        .then((response1) => {
+            console.log("hello");
+            res.status(200).json(response1.data);
+        })
         .catch((err) => {
-            console.log(err);
-            res.status(401).json(err);
+            if (err.code == "ECONNABORTED") {
+                res.status(404).json(err);
+            } else if (err.response.status == 401) {
+                res.status(401).json(err);
+            }
         });
 }

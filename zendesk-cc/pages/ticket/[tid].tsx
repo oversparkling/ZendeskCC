@@ -15,6 +15,7 @@ type Ticket = {
 };
 
 const TicketDetails: NextPage = () => {
+    const [errorMessage, setErrorMessage] = useState("");
     const [ticketDetails, setTicketDetails] = useState<Ticket | undefined>();
     const [requesterName, setRequesterName] = useState("");
     const router = useRouter();
@@ -37,15 +38,16 @@ const TicketDetails: NextPage = () => {
                             userid: response.data.ticket.requester_id,
                         })
                         .then((response) => {
-                            console.log(response.data);
                             setRequesterName(response.data.user.name);
-                        })
-                        .catch((error) => {
-                            console.log(error);
                         });
                 })
-                .catch(() => {
-                    router.push("/");
+                .catch((error) => {
+                    console.log(error.response.status);
+                    if (error.response.status == 401) {
+                        router.push("/");
+                    } else if (error.response.status == 404) {
+                        setErrorMessage("Ticket does not exist");
+                    }
                 });
         }
     }, [tid]);
@@ -124,7 +126,16 @@ const TicketDetails: NextPage = () => {
                     </div>
                 </div>
             ) : (
-                <div></div>
+                <div className="h-screen w-screen items-center justify-center flex-col flex">
+                    
+                    <span className="text-lg text-red-500">{errorMessage}</span>
+                    <div
+                        className=" border rounded-full p-3 items-center justify-center flex-row flex bg-blue-200 mt-5 ml-5 cursor-pointer"
+                        onClick={() => router.push("/home")}
+                    >
+                        <LeftOutlined /> Back to all tickets
+                    </div>
+                </div>
             )}
         </>
     );
