@@ -6,15 +6,24 @@ export default async function ZendeskAPI(
   res: NextApiResponse<any>
 ) {
   const zendeskSubDomain = "https://zccoversparkling.zendesk.com/";
-  const response = await axios
+    let userId
+    await axios
     .get(zendeskSubDomain + "api/v2/users/me.json", {
       auth: {
         username: req.body.username,
         password: req.body.password,
       },
     })
-    .then((response) => res.status(200).json({ id: response.data.user.id }))
-    .catch((err) => {
-      res.status(401).json({ error: "Wrong credentials" });
-    });
+    .then((response) => userId = response.data.user.id)
+    // .catch((err) => {
+    //   res.status(401).json({ error: "Wrong credentials" });
+    //   return
+    // });
+    if (userId!= null){
+      res.status(200).json({ id: userId })
+    }
+    else{
+      res.status(401).json({ error: "Wrong credentials" })
+    }
+    // res.status(200).json({ id: userId })
 }
