@@ -11,7 +11,6 @@ import HomePageTicket from "../components/HomePageTicket";
 
 const Dashboard: NextPage = () => {
     const [requestData, setRequestData] = useState<any[]>([]);
-    const router = useRouter();
     const [state, setState] = useState({
         minValue: 0,
         maxValue: 25,
@@ -33,7 +32,7 @@ const Dashboard: NextPage = () => {
     }, []);
     const { TabPane } = Tabs;
 
-    const handleChange = (value) => {
+    const handleChange = (value:number) => {
         setState({
             minValue: (value - 1) * 25,
             maxValue: value * 25,
@@ -60,6 +59,9 @@ const Dashboard: NextPage = () => {
             <span className="text-3xl font-bold mt-20 mb-16">
                 Your tickets at a glance
             </span>
+            <div>
+              You have a total of {requestData.length} tickets and 25 on this page
+            </div>
             <div className="w-3/4 ">
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Open Tickets" key="1">

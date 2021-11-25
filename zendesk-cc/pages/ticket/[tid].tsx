@@ -7,8 +7,15 @@ import Divider from "antd/lib/divider";
 import { Avatar } from "antd";
 import { UserOutlined, LeftOutlined } from "@ant-design/icons";
 
+type Ticket = {
+    subject: string;
+    status: string;
+    created_at: string;
+    description: string;
+};
+
 const TicketDetails: NextPage = () => {
-    const [ticketDetails, setTicketDetails] = useState();
+    const [ticketDetails, setTicketDetails] = useState<Ticket | undefined>();
     const [requesterName, setRequesterName] = useState("");
     const router = useRouter();
     const { tid } = router.query;
@@ -44,7 +51,7 @@ const TicketDetails: NextPage = () => {
     }, [tid]);
     return (
         <>
-            {ticketDetails ? (
+            {ticketDetails != undefined ? (
                 <div className="h-screen w-screen flex-col flex items-center">
                     <div
                         style={{
@@ -59,14 +66,36 @@ const TicketDetails: NextPage = () => {
                             zIndex: -1,
                         }}
                     />
-                    <div className="self-start mb-5 border rounded-full p-3 items-center justify-center flex-row flex bg-blue-200 mt-5 ml-5 cursor-pointer" onClick = {()=>router.push("/home")}>
+                    <div
+                        className="self-start mb-5 border rounded-full p-3 items-center justify-center flex-row flex bg-blue-200 mt-5 ml-5 cursor-pointer"
+                        onClick={() => router.push("/home")}
+                    >
                         <LeftOutlined /> Back to all tickets
                     </div>
                     <div className="w-3/4 border flex-col flex h-full p-5 rounded-xl bg-white mb-10">
-                        <div className="flex-col flex justify-center ">
+                        <div className="flex-row flex items-center justify-between ">
                             <span className="font-bold text-lg">
                                 Subject: {ticketDetails.subject}
                             </span>
+                            {ticketDetails.status == "open" ? (
+                                <div className="h-8 w-8 items-center flex-col flex justify-center text-center rounded bg-red-500">
+                                    <span className="text-white text-md">
+                                        O
+                                    </span>
+                                </div>
+                            ) : ticketDetails.status == "pending" ? (
+                                <div className="h-8 w-8 items-center flex-col flex justify-center text-center rounded bg-blue-500">
+                                    <span className="text-white text-md">
+                                        P
+                                    </span>
+                                </div>
+                            ) : (
+                                <div className="h-8 w-8 items-center flex-col flex justify-center text-center rounded bg-gray-500">
+                                    <span className="text-white text-md">
+                                        S
+                                    </span>
+                                </div>
+                            )}
                         </div>
                         <Divider />
                         <div className="flex-row flex justify-between w-full">
