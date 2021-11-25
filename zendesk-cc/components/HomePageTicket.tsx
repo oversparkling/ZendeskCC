@@ -35,7 +35,7 @@ export default function HomePageTicket(props: Props) {
     return (
         <Slide bottom>
             <div className="inline-block px-3 w-1/3">
-                <div className="overflow-hidden shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out w-full bg-white shadow-sm p-3 mx-1 my-3 cursor-pointer">
+                <div className="overflow-hidden shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out w-full bg-white shadow-sm p-3 mx-1 my-3 cursor-pointer" onClick = {()=>router.push("/ticket/"+props.id)}>
                     <div className="mt-4 pl-3 mb-2 flex justify-between ">
                         <div className="mr-4">
                             <p className="text-lg font-semibold text-gray-900 mb-0">

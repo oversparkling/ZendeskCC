@@ -3,9 +3,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
+import Divider from "antd/lib/divider";
+import { Avatar } from "antd";
+import { UserOutlined, LeftOutlined } from "@ant-design/icons";
 
 const TicketDetails: NextPage = () => {
     const [ticketDetails, setTicketDetails] = useState();
+    const [requesterName, setRequesterName] = useState("");
     const router = useRouter();
     const { tid } = router.query;
     useEffect(() => {
@@ -18,19 +22,82 @@ const TicketDetails: NextPage = () => {
                 })
                 .then((response) => {
                     console.log(response.data);
-                    setTicketDetails(response.data);
+                    setTicketDetails(response.data.ticket);
+                    axios
+                        .post("/api/getUsername", {
+                            username: Cookies.get("username"),
+                            password: Cookies.get("password"),
+                            userid: response.data.ticket.requester_id,
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+                            setRequesterName(response.data.user.name);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
                 })
                 .catch(() => {
-                    // router.push("/");
+                    router.push("/");
                 });
         }
     }, [tid]);
     return (
-        <div className = "h-screen w-screen ">
-            <div>
-                
-            </div>
-        </div>
+        <>
+            {ticketDetails ? (
+                <div className="h-screen w-screen flex-col flex items-center">
+                    <div
+                        style={{
+                            backgroundImage: "url(/background2.jpg)",
+                            backgroundPosition: "center",
+                            backgroundSize: "cover",
+                            backgroundRepeat: "no-repeat",
+                            width: "100%",
+                            height: "100%",
+                            opacity: 0.2,
+                            position: "absolute",
+                            zIndex: -1,
+                        }}
+                    />
+                    <div className="self-start mb-5 border rounded-full p-3 items-center justify-center flex-row flex bg-blue-200 mt-5 ml-5 cursor-pointer" onClick = {()=>router.push("/home")}>
+                        <LeftOutlined /> Back to all tickets
+                    </div>
+                    <div className="w-3/4 border flex-col flex h-full p-5 rounded-xl bg-white mb-10">
+                        <div className="flex-col flex justify-center ">
+                            <span className="font-bold text-lg">
+                                Subject: {ticketDetails.subject}
+                            </span>
+                        </div>
+                        <Divider />
+                        <div className="flex-row flex justify-between w-full">
+                            <div>
+                                <Avatar
+                                    className="items-center justify-center flex flex-col"
+                                    size={48}
+                                    icon={<UserOutlined />}
+                                />
+                                <span className="ml-2 font-bold">
+                                    {requesterName}
+                                </span>
+                            </div>
+                            <div className="items-center flex-col flex justify-center">
+                                <span className="">
+                                    Created at:{" "}
+                                    {new Date(ticketDetails.created_at)
+                                        .toString()
+                                        .slice(0, 21)}
+                                </span>
+                            </div>
+                        </div>
+                        <div className="w-full mt-8">
+                            {ticketDetails.description}
+                        </div>
+                    </div>
+                </div>
+            ) : (
+                <div></div>
+            )}
+        </>
     );
 };
 
