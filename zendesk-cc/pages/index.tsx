@@ -5,19 +5,27 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import { useRouter } from "next/dist/client/router";
 import axios from "axios";
-import ZendeskAPI from "../service/ZendeskAPI";
+import ZendeskAPI from "./api/validate";
+import Cookies from "js-cookie";
 
 const Home: NextPage = () => {
   const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const login = async() => {
-    const auth = await ZendeskAPI.validateUser(username, password) 
-    if (auth == 200) {
-      router.push("/home");
-    }
-    setErrorMessage("Invalid Credentials");
+  const login = async () => {
+    const response = await axios
+      .post("/api/validate", { username: username, password: password })
+      .then((response) => {
+        console.log(response.data);
+        Cookies.set("username", username);
+        Cookies.set("password", password);
+        Cookies.set("user_id", response.data.id);
+        router.push("/home");
+      })
+      .catch(() => {
+        setErrorMessage("Invalid Credentials");
+      });
   };
   return (
     <div className="w-screen h-screen flex-col flex items-center justify-center">
@@ -38,7 +46,7 @@ const Home: NextPage = () => {
         <Image src="/zendesklogo.svg" height="40" width="200" />
 
         <span>Sign in to Account</span>
-        <span className = "text-red-500">{errorMessage} </span>
+        <span className="text-red-500">{errorMessage} </span>
         <input
           placeholder="Email"
           className="rounded-xl w-2/3 border p-2 mt-5 "
