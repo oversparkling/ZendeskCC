@@ -45,7 +45,7 @@ const Home: NextPage = () => {
       <div className="w-1/4 rounded-xl py-10 border flex-col items-center flex bg-white">
         <Image src="/zendesklogo.svg" height="40" width="200" />
 
-        <span>Sign in to Account</span>
+        <span className = "font-bold text-lg mt-5">Sign in to your account</span>
         <span className="text-red-500">{errorMessage} </span>
         <input
           placeholder="Email"
