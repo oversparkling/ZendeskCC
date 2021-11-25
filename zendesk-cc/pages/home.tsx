@@ -57,8 +57,10 @@ const Dashboard: NextPage = () => {
         //         })}
         // </div>
         <div className="w-full flex-col flex items-center">
-          <span className = "text-3xl font-bold mt-20 mb-16">Your tickets at a glance</span>
-            <div className = "w-3/4 ">
+            <span className="text-3xl font-bold mt-20 mb-16">
+                Your tickets at a glance
+            </span>
+            <div className="w-3/4 ">
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Open Tickets" key="1">
                         <div className="flex pb-10 hide-scroll-bar">
@@ -76,6 +78,7 @@ const Dashboard: NextPage = () => {
                                             console.log(element);
                                             return (
                                                 <HomePageTicket
+                                                    id={element.id}
                                                     subject={element.subject}
                                                     requester={
                                                         element.requester_id
@@ -113,7 +116,7 @@ const Dashboard: NextPage = () => {
                                     console.log(element);
                                     return (
                                         <HomePageTicket
-                                            id = {element.id}
+                                            id={element.id}
                                             subject={element.subject}
                                             requester={element.requester}
                                             description={element.description}
@@ -137,6 +140,7 @@ const Dashboard: NextPage = () => {
                                     console.log(element);
                                     return (
                                         <HomePageTicket
+                                            id={element.id}
                                             subject={element.subject}
                                             requester={element.requester}
                                             description={element.description}
