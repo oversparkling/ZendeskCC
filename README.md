@@ -23,4 +23,4 @@ $ npm run dev
 ```
 The client will be accessible from localhost:3000
 
-Alternatively, this application is hosted on Vercel [here](https://zendesk-cc.vercel.app/)
+Alternatively, this application is hosted on Vercel [here](https://zendesk-cc-oversparkling.vercel.app/)
