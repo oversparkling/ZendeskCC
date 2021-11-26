@@ -12,7 +12,7 @@ This project was a coding assignment given by Zendesk with a deliverable to prod
 ## Local Deployment
 ### Cloning of Repo
 ```base
-$ git clone https://github.com/iPhantasmic/Locus.git
+$ git clone https://github.com/oversparkling/ZendeskCC.git
 ```
 
 ### Next.js Application
