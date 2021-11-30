@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+//This API helps the client to retrieve the full list of tickets under the user's id. Included a timeout for the request in the case that the endpoint fails
 export default async function ZendeskAPI(
     req: NextApiRequest,
     res: NextApiResponse<any>

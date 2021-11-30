@@ -6,7 +6,9 @@ import { useRouter } from "next/router";
 import Divider from "antd/lib/divider";
 import { Avatar } from "antd";
 import { UserOutlined, LeftOutlined } from "@ant-design/icons";
+import Loading from "../../components/Loading";
 
+//Ticket type takes in these parameters
 type Ticket = {
     subject: string;
     status: string;
@@ -17,8 +19,14 @@ type Ticket = {
 const TicketDetails: NextPage = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [ticketDetails, setTicketDetails] = useState<Ticket | undefined>();
+
+    //Using the requester's name instead of their ID
     const [requesterName, setRequesterName] = useState("");
     const router = useRouter();
+
+    const [isLoading, setIsLoading] = useState(true)
+
+    //Retrieving request param
     const { tid } = router.query;
     useEffect(() => {
         if (tid != undefined) {
@@ -31,6 +39,8 @@ const TicketDetails: NextPage = () => {
                 .then((response) => {
                     console.log(response.data);
                     setTicketDetails(response.data.ticket);
+                    setIsLoading(false)
+                    //Retrieving username
                     axios
                         .post("/api/getUsername", {
                             username: Cookies.get("username"),
@@ -43,17 +53,22 @@ const TicketDetails: NextPage = () => {
                 })
                 .catch((error) => {
                     console.log(error.response.status);
+                    //If user is not authenticated properly, redirect them to the login screen
                     if (error.response.status == 401) {
                         router.push("/");
-                    } else if (error.response.status == 404) {
+                    }
+                    //Ticket not found 
+                    else if (error.response.status == 404) {
                         setErrorMessage("Ticket does not exist");
+                        setIsLoading(false)
                     }
                 });
         }
     }, [tid]);
     return (
         <>
-            {ticketDetails != undefined ? (
+        {
+            isLoading? <Loading />:ticketDetails != undefined ? (
                 <div className="h-screen w-screen flex-col flex items-center">
                     <div
                         style={{
@@ -136,7 +151,9 @@ const TicketDetails: NextPage = () => {
                         <LeftOutlined /> Back to all tickets
                     </div>
                 </div>
-            )}
+            )
+        }
+            {}
         </>
     );
 };

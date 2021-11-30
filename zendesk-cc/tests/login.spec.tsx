@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test'
 
+
+//This is a test to check that a user should not be able to login with wrong credentials
 test('Should show invalid credentials with wrong login', async ({ page }) => {
 
   await page.goto('http://localhost:3000/')

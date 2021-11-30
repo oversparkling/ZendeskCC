@@ -10,16 +10,26 @@ import { useEffect, useState } from "react";
 import HomePageTicket from "../components/HomePageTicket";
 import Loading from "../components/Loading";
 
+//This page is the logged in page, rendering the list of tickets at a glance
 const Dashboard: NextPage = () => {
+    //Provide user with understanding on error received
     const [errorMessage, setErrorMessage] = useState("");
+
+    //List of tickets
     const [requestData, setRequestData] = useState<any[]>([]);
+
+    //Loading that is used for prematurely rendering the page
     const [isLoading, setIsLoading] = useState<boolean>(true);
+
+    //Number of tickets to be rendered on one page
     const [state, setState] = useState({
         minValue: 0,
         maxValue: 25,
     });
+
     const router = useRouter();
     useEffect(() => {
+        //populating tickets
         axios
             .post("/api/loadAllTickets", {
                 username: Cookies.get("username"),
@@ -36,7 +46,9 @@ const Dashboard: NextPage = () => {
                 if (error.response.status == 401) {
                     router.push("/");
                 } else if (error.response.status == 404) {
-                    setErrorMessage("There is an issue with the server. Please try again later");
+                    setErrorMessage(
+                        "There is an issue with the server. Please try again later"
+                    );
                 }
                 setIsLoading(false);
                 console.log(error);
@@ -56,21 +68,6 @@ const Dashboard: NextPage = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                // <div className="w-full flex-col flex items-center justify-center">
-                //     {requestData.length > 0 &&
-                //         requestData.map((element) => {
-                //             console.log(element);
-                //             return (
-                //                 <HomePageTicket
-                //                     subject={element.subject}
-                //                     requester={element.requester}
-                //                     description={element.description}
-                //                     status={element.status}
-                //                     priority={element.priority}
-                //                 />
-                //             );
-                //         })}
-                // </div>
                 <div className="w-full flex-col flex items-center">
                     <span className="text-red-500 font-bold text-lg">
                         {errorMessage}
@@ -80,6 +77,8 @@ const Dashboard: NextPage = () => {
                     </span>
                     <div>You have a total of {requestData.length} tickets</div>
                     <div className="w-3/4 ">
+                        {/* Dashboard for list of tickets */}
+                        {/* TabPane allows splitting of the tickets into respective category */}
                         <Tabs defaultActiveKey="1">
                             <TabPane tab="Open Tickets" key="1">
                                 <div className="flex pb-10 hide-scroll-bar">

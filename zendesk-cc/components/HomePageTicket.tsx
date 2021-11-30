@@ -14,6 +14,9 @@ type Props = {
     id: string;
 };
 
+// This component is an abstracted ticket to allow easy rendering of ticket details on our client, 
+// while also allowing us to reuse/easily
+
 export default function HomePageTicket(props: Props) {
     const router = useRouter();
     const [requesterName, setReqesterName] = useState("")

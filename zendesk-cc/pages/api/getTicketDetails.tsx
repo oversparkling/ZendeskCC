@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+//This API helps to our client to retrieve the ticket details given the ticket ID and their credentials
 export default async function ZendeskAPI(
     req: NextApiRequest,
     res: NextApiResponse<any>
@@ -15,13 +16,6 @@ export default async function ZendeskAPI(
         })
         .then((response1) => res.status(200).json(response1.data))
         .catch((err) => {
-            console.log(err.response)
-            if (err.response.status == 404){
-                res.status(404).json(err);
-            }
-            else{
-                res.status(401).json(err);
-            }
-            // console.log(err);
+            res.status(err.response.status).json(err);
         });
 }

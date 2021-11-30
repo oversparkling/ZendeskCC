@@ -1,6 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+
+//This API helps the client to translate the userID from tickets to username/name for better user experience on the client
 export default async function ZendeskAPI(
     req: NextApiRequest,
     res: NextApiResponse<any>
